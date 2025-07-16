@@ -1,9 +1,8 @@
-import { useEffect } from "react";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export default function Students(){
     const fields = ['ID', 'First Name', 'Last Name', 'Age', 'Update', 'Delete']
-    const [list, setList] = useState([{}])
+    const [records, setRecords] = useState([{}])
 
     useEffect(()=>{
         getStudentData()
@@ -12,15 +11,13 @@ export default function Students(){
     async function getStudentData(){
         try{
             const response = await fetch('http://localhost:3000/api/v1/get')
-            const record = await response.json()
-
-            console.log(record);
+            const data = await response.json()
 
             if(!response.ok){
-                console.log(record.message);
+                console.log(data.message);
             }
 
-            setList(record)
+            setRecords(data.records)
         }catch(err){
             console.log(err);
         }
@@ -38,6 +35,19 @@ export default function Students(){
                 {
                     fields.map((field, index) => (
                         <div key={index} className="border border-gray-300 p-2 font-semibold">{field}</div>
+                    ))
+                }
+
+                {
+                    records.map((record, index) => (
+                        <React.Fragment key={index}>
+                            <div className="border border-gray-300 p-2 font-semibold">{record.id}</div>
+                            <div className="border border-gray-300 p-2 font-semibold">{record.first_name}</div>
+                            <div className="border border-gray-300 p-2 font-semibold">{record.last_name}</div>
+                            <div className="border border-gray-300 p-2 font-semibold">{record.age}</div>
+                            <div className="border border-gray-300 p-2 font-semibold"><button className="bg-[rgb(37,166,68)] px-3 py-1 text-white rounded-[3px] leading-6 hover:bg-[rgb(31,136,55)] transition-colors duration-200 ease-in-out">Update</button></div>
+                            <div className="border border-gray-300 p-2 font-semibold"><button className="bg-[rgb(218,53,64)] px-3 py-1 text-white rounded-[3px] leading-6 hover:bg-[rgb(184,43,53)] transition-colors duration-200 ease-in-out">Delete</button></div>
+                        </React.Fragment>
                     ))
                 }
             </div>
