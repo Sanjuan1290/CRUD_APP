@@ -25,6 +25,26 @@ export default function Students(){
         }
     }
 
+    async function deleteSingleRecord(id){
+        console.log(id);
+        
+        try{
+            const response = await fetch('http://localhost:3000/api/v1/delete', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ id })
+            })
+
+            if(!response.ok) console.log(response.message);
+            getStudentData()
+        }catch(err){
+            console.log(err);
+        }
+        
+    }
+
     return(
         <main className="flex flex-col p-12 md:p-16">
 
@@ -48,13 +68,13 @@ export default function Students(){
                             <div className={`border ${index % 2 === 0 ? 'bg-gray-200' : 'bg-whtie'} border-gray-300 p-2 font-semibold`}>{record.last_name}</div>
                             <div className={`border ${index % 2 === 0 ? 'bg-gray-200' : 'bg-whtie'} border-gray-300 p-2 font-semibold`}>{record.age}</div>
                             <div className={`border ${index % 2 === 0 ? 'bg-gray-200' : 'bg-whtie'} border-gray-300 p-2 font-semibold`}><button className="bg-[rgb(37,166,68)] px-3 py-1 text-white rounded-[3px] leading-6 hover:bg-[rgb(31,136,55)] transition-colors duration-200 ease-in-out">Update</button></div>
-                            <div className={`border ${index % 2 === 0 ? 'bg-gray-200' : 'bg-whtie'} border-gray-300 p-2 font-semibold`}><button className="bg-[rgb(218,53,64)] px-3 py-1 text-white rounded-[3px] leading-6 hover:bg-[rgb(184,43,53)] transition-colors duration-200 ease-in-out">Delete</button></div>
+                            <div className={`border ${index % 2 === 0 ? 'bg-gray-200' : 'bg-whtie'} border-gray-300 p-2 font-semibold`}><button onClick={()=>{deleteSingleRecord(record.id)}} className="bg-[rgb(218,53,64)] px-3 py-1 text-white rounded-[3px] leading-6 hover:bg-[rgb(184,43,53)] transition-colors duration-200 ease-in-out">Delete</button></div>
                         </React.Fragment>
                     ))
                 }
             </div>
             
-            <AddRecord showAddStudent={showAddStudent} setShowAddStudent={setShowAddStudent}/>
+            <AddRecord showAddStudent={showAddStudent} setShowAddStudent={setShowAddStudent} getStudentData={getStudentData}/>
         </main>
     )
 }

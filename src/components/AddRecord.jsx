@@ -1,6 +1,6 @@
 import crossIcon from '../assets/cross.png'
 
-export default function AddRecord({ showAddStudent, setShowAddStudent }){
+export default function AddRecord({ showAddStudent, setShowAddStudent, getStudentData }){
 
     async function addRecord(e){
         e.preventDefault();
@@ -21,6 +21,7 @@ export default function AddRecord({ showAddStudent, setShowAddStudent }){
 
             if(!response.ok) throw new Error('something went wrong');
             setShowAddStudent(false);
+            getStudentData()
             e.target.reset()
         }catch(err){
             console.log(err);
