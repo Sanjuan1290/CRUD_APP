@@ -1,9 +1,29 @@
+import { useEffect } from "react";
+import { useState } from "react";
 
 export default function Students(){
+    const fields = ['ID', 'First Name', 'Last Name', 'Age', 'Update', 'Delete']
+    const [list, setList] = useState([{}])
+
+    useEffect(()=>{
+        getStudentData()
+    }, [])
 
     async function getStudentData(){
+        try{
+            const response = await fetch('http://localhost:3000/api/v1/get')
+            const record = await response.json()
 
-        
+            console.log(record);
+
+            if(!response.ok){
+                console.log(record.message);
+            }
+
+            setList(record)
+        }catch(err){
+            console.log(err);
+        }
     }
 
     return(
@@ -15,14 +35,11 @@ export default function Students(){
             </div>
 
             <div className="grid grid-cols-[1fr_1fr_1fr_1fr_1fr_1fr] md:grid-cols-[100px_1fr_1fr_100px_1fr_1fr] border border-gray-300 mt-5">
-
-                <div className="border border-gray-300 p-2 font-semibold">ID</div>
-                <div className="border border-gray-300 p-2 font-semibold">First Name</div>
-                <div className="border border-gray-300 p-2 font-semibold">Last Name</div>
-                <div className="border border-gray-300 p-2 font-semibold">Age</div>
-                <div className="border border-gray-300 p-2 font-semibold">Update</div>
-                <div className="border border-gray-300 p-2 font-semibold">Delete</div>
-
+                {
+                    fields.map((field, index) => (
+                        <div key={index} className="border border-gray-300 p-2 font-semibold">{field}</div>
+                    ))
+                }
             </div>
             
         </main>
