@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import AddRecord from './AddRecord'
+import { NavLink } from "react-router-dom";
 
 export default function Students(){
     const fields = ['ID', 'First Name', 'Last Name', 'Age', 'Update', 'Delete']
@@ -25,9 +26,7 @@ export default function Students(){
         }
     }
 
-    async function deleteSingleRecord(id){
-        console.log(id);
-        
+    async function deleteSingleRecord(id){        
         try{
             const response = await fetch('http://localhost:3000/api/v1/delete', {
                 method: 'DELETE',
@@ -42,8 +41,8 @@ export default function Students(){
         }catch(err){
             console.log(err);
         }
-        
     }
+
 
     return(
         <main className="flex flex-col p-12 md:p-16">
@@ -67,8 +66,12 @@ export default function Students(){
                             <div className={`border ${index % 2 === 0 ? 'bg-gray-200' : 'bg-whtie'} border-gray-300 p-2 font-semibold`}>{record.first_name}</div>
                             <div className={`border ${index % 2 === 0 ? 'bg-gray-200' : 'bg-whtie'} border-gray-300 p-2 font-semibold`}>{record.last_name}</div>
                             <div className={`border ${index % 2 === 0 ? 'bg-gray-200' : 'bg-whtie'} border-gray-300 p-2 font-semibold`}>{record.age}</div>
-                            <div className={`border ${index % 2 === 0 ? 'bg-gray-200' : 'bg-whtie'} border-gray-300 p-2 font-semibold`}><button className="bg-[rgb(37,166,68)] px-3 py-1 text-white rounded-[3px] leading-6 hover:bg-[rgb(31,136,55)] transition-colors duration-200 ease-in-out">Update</button></div>
-                            <div className={`border ${index % 2 === 0 ? 'bg-gray-200' : 'bg-whtie'} border-gray-300 p-2 font-semibold`}><button onClick={()=>{deleteSingleRecord(record.id)}} className="bg-[rgb(218,53,64)] px-3 py-1 text-white rounded-[3px] leading-6 hover:bg-[rgb(184,43,53)] transition-colors duration-200 ease-in-out">Delete</button></div>
+                            <div className={`border ${index % 2 === 0 ? 'bg-gray-200' : 'bg-whtie'} border-gr ay-300 p-2 font-semibold`}>
+                                <NavLink to={`/update_page?id=${record.id}`}><button  className="bg-[rgb(37,166,68)] px-3 py-1 text-white rounded-[3px] leading-6 hover:bg-[rgb(31,136,55)] transition-colors duration-200 ease-in-out">Update</button></NavLink>
+                            </div>
+                            <div className={`border ${index % 2 === 0 ? 'bg-gray-200' : 'bg-whtie'} border-gray-300 p-2 font-semibold`}>
+                                <button onClick={()=>{deleteSingleRecord(record.id)}} className="bg-[rgb(218,53,64)] px-3 py-1 text-white rounded-[3px] leading-6 hover:bg-[rgb(184,43,53)] transition-colors duration-200 ease-in-out">Delete</button>
+                            </div>
                         </React.Fragment>
                     ))
                 }
